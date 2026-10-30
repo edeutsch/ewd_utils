@@ -18,6 +18,8 @@ mass_lookup_table = {
     'n': { 43.018425: 'Acetyl', 305.214971: 'TMTpro' },
     'C': { 143.0041: 'Pyro-Carbamidomethyl',
            160.030649: 'Carbamidomethyl',
+           222.01329: 'Cysteinyl',
+           160.030649: 'Carbamidomethyl',
            102.00136: 'Dehydro',
            134.999019: 'Dioxidation',
            150.99393: 'Trioxidation',

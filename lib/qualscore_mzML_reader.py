@@ -19,11 +19,9 @@ from multiprocessing.pool import ThreadPool
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 from scipy.optimize import curve_fit
-from scipy import exp
 from pyteomics import mzml, auxiliary
 
 #### Import the metadata handler
-from metadata_handler import MetadataHandler
 from spectrum import Spectrum
 
 
@@ -390,11 +388,11 @@ class QualscoreMzMlReader:
 
     ####################################################################################################
     #### Compute stats about the precursor window and the precursor therein
-    def compute_precursor_window_stats(new_spectrum_obj, spectrum, last_precursor_spectrum):
+    def compute_precursor_window_stats(self, new_spectrum_obj, spectrum, last_precursor_spectrum):
 
         #### Fill a dict with various stats we will compute
         precursor_window_stats = {
-            'search_tolerance': 10,
+            'search tolerance': 10,
             'isolation window target m/z': None,
             'isolation window lower offset': None,
             'isolation window upper offset': None,
@@ -402,7 +400,7 @@ class QualscoreMzMlReader:
             'isolation window upper bound': None,
             'isolation window full width': None,
             'selected ion m/z': None,
-            'charge state': None,
+            'charge state': 2,
             'peak intensity': None,
             'precursor region m/z array': [],
             'precursor region intensity array': [],
@@ -410,7 +408,7 @@ class QualscoreMzMlReader:
             'selection window m/z array': [],
             'selection window intensity array': [],
             'selection window annotation array': [],
-            'selection window m/z ppm diff array': [],
+            'selection window m/z ppm difference array': [],
             'precursor isotopic envelope m/z array': [],
             'precursor isotopic envelope selection window total intensity': 0.0,
             'non-precursor isotopic envelope selection window total intensity': 0.0,
@@ -481,8 +479,8 @@ class QualscoreMzMlReader:
                 mzdiff_ppm = ( precursor_window_stats['precursor isotopic envelope m/z array'][isotope_index] - mz ) / mz * 1e6
                 if abs(mzdiff_ppm) < precursor_window_stats['search tolerance']:
                     charge_str = ''
-                    if precursor_window_stats['charge_state'] > 1:
-                        charge_str = f"^{precursor_window_stats['charge_state']}"
+                    if precursor_window_stats['charge state'] > 1:
+                        charge_str = f"^{precursor_window_stats['charge state']}"
                     isotope_str = ''
                     if isotope_index == 1:
                         isotope_str = '+i'
