@@ -121,10 +121,23 @@ def prepare_spectrum_data(spectrum_data, search_results, verbose):
     if include_reporter_ion_intensities and reporter_ion_intensities is not None:
         for i in range(len(reporter_ion_intensities)):
             columns.append(f"TMTpro_{i}")
+
     with open('qualscore_metrics.tsv', 'w', newline='') as outfile:
         writer = csv.writer(outfile, delimiter="\t")
         outfile.write("\t".join(columns) + "\n")
-        writer.writerows(merged_data)
+        #writer.writerows(merged_data)
+        new_row = []
+        for row in merged_data:
+            i_column = 0
+            for value in row:
+                if i_column in [3, 4]:
+                    new_value = str(round(value,4))
+                elif i_column in [ 8, 9, 10, 11, 12 ]:
+                    new_value = str(round(value,2))
+                else:
+                    new_value = str(value).strip()
+                new_row.append(new_value)
+            outfile.write("\t".join(columns) + "\n")
 
     return merged_data
 
