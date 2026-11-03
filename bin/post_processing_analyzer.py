@@ -67,6 +67,8 @@ def prepare_spectrum_data(spectrum_data, search_results, verbose):
         eprint(f"INFO: Computing spectrum metrics")
         progress_intro = False
 
+    include_reporter_ion_intensities = False
+
     pxd_identifier = 'PXD999001'
     merged_data = []
 
@@ -105,17 +107,18 @@ def prepare_spectrum_data(spectrum_data, search_results, verbose):
             probability = float(search_results.psms[index][3])
             peptidoform = search_results.psms[index][4]
             peptide_length = search_results.psms[index][5]
+            protein_name = search_results.psms[index][6]
         n_peaks = len(raw_spectrum['mzs'])
 
         usi = f"mzspec:{pxd_identifier}:{msrun_name}:scan:{scan_number}:{peptidoform}/{charge_state}"
 
-        row = [ msrun_name, scan_number, charge_state, precursor_mz, probability , peptidoform, peptide_length, n_peaks, minimum_intensity, weighted_snr, reporter_ions_median_snr, quality_score, selection_win_purity, usi ]
-        if reporter_ion_intensities is not None:
+        row = [ msrun_name, scan_number, charge_state, precursor_mz, probability , peptidoform, peptide_length, protein_name, n_peaks, minimum_intensity, weighted_snr, reporter_ions_median_snr, quality_score, selection_win_purity, usi ]
+        if include_reporter_ion_intensities and reporter_ion_intensities is not None:
             row.extend(reporter_ion_intensities)
         merged_data.append(row)
 
     columns = [ 'msrun_name', 'scan', 'charge', 'precursor_mz', 'probability', 'peptidoform', 'peptide_length', 'n_peaks', 'minimum_intensity', 'weighted_snr', 'reporter_ions_median_snr', 'quality_score', 'selection_win_purity', 'usi' ]
-    if reporter_ion_intensities is not None:
+    if include_reporter_ion_intensities and reporter_ion_intensities is not None:
         for i in range(len(reporter_ion_intensities)):
             columns.append(f"TMTpro_{i}")
     with open('qualscore_metrics.tsv', 'w', newline='') as outfile:

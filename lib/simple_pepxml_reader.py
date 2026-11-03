@@ -168,6 +168,7 @@ class SimplePepXmlReader:
                 msrun_name = '?'
 
                 sequence = psm['search_hit'][0]['peptide']
+                protein_name = psm['search_hit'][0]['protein']
                 charge = psm['assumed_charge']
                 peptide_length = len(sequence)
 
@@ -210,7 +211,7 @@ class SimplePepXmlReader:
                 keep = True
 
                 if keep:
-                    row = [ msrun_name, str(psm['start_scan']), str(charge), str(peptideprophet_probability), peptidoform, peptide_length ]
+                    row = [ msrun_name, str(psm['start_scan']), str(charge), str(peptideprophet_probability), peptidoform, peptide_length, protein ]
                     self.psms.append(row)
                     self.mzmls[msrun_name] = True
 
